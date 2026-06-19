@@ -179,6 +179,10 @@ class RagService:
         :param documents: 文档列表
         :return: 重排序后的文档列表
         """
+        if init_manager.reorder_service is None:
+            logger.info("【RAG】重排序未启用，使用原始检索顺序")
+            return documents
+
         if self.thinking_callback:
             await self.thinking_callback({
                 "type": "thinking",

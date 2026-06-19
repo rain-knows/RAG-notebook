@@ -5,7 +5,7 @@ description = "Django User Service"
 authors = [
     { name = "RMA-MUN", email = "n3032747608@163.com" },
 ]
-requires-python = ">=3.10"
+requires-python = ">=3.10,<3.14"
 license = "MIT"
 dependencies = [
     "django==5.2.6",

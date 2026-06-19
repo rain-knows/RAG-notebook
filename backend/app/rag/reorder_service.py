@@ -180,5 +180,3 @@ class ReorderService:
         return formatted_result
 
 
-# 全局重排序服务实例
-reorder_service = ReorderService()
