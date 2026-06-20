@@ -65,9 +65,9 @@ export default function RelatedFragments({ noteId, open, onClose }: Props) {
                     <div className="flex items-start justify-between gap-2">
                       <div className="flex items-center gap-1.5 min-w-0">
                         {f.source === 'knowledge_base' ? (
-                          <Library size={13} className="shrink-0 text-blue-500" />
+                          <Library size={13} className="shrink-0 text-[var(--color-link)]" />
                         ) : (
-                          <FileText size={13} className="shrink-0 text-emerald-500" />
+                          <FileText size={13} className="shrink-0 text-[var(--color-success)]" />
                         )}
                         <span className="text-xs font-medium text-[var(--color-text)] truncate">
                           {f.title}
@@ -76,8 +76,8 @@ export default function RelatedFragments({ noteId, open, onClose }: Props) {
                       <div className="flex items-center gap-1 shrink-0">
                         <span className={`text-[10px] px-1.5 py-0.5 rounded-full font-medium ${
                           f.source === 'knowledge_base'
-                            ? 'bg-blue-50 text-blue-600'
-                            : 'bg-emerald-50 text-emerald-600'
+                            ? 'bg-[var(--color-link-bg)] text-[var(--color-link)]'
+                            : 'bg-[var(--color-success-bg)] text-[var(--color-success)]'
                         }`}>
                           {f.source === 'knowledge_base' ? '知识库' : '笔记'}
                         </span>

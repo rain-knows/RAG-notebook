@@ -19,7 +19,7 @@ export default function BatchActionBar({
   const { t } = useTranslation()
 
   return (
-    <div className="flex items-center gap-3 px-5 py-3 rounded-lg bg-[var(--color-card)] border border-[var(--color-border)] mb-3">
+    <div className="flex items-center gap-3 px-5 py-3 rounded-lg bg-[var(--color-card)] border border-[var(--color-border)] shadow-[var(--shadow-card)] mb-3">
       <button
         onClick={onCancel}
         className="flex items-center gap-1.5 px-3 py-1.5 text-xs text-[var(--color-text-secondary)] hover:text-[var(--color-text)] transition-colors"
@@ -37,21 +37,21 @@ export default function BatchActionBar({
       <div className="flex items-center gap-2">
         <button
           onClick={onCategory}
-          className="flex items-center gap-1.5 px-3 py-1.5 text-xs rounded-md bg-[var(--color-bg-secondary)] text-[var(--color-text-secondary)] hover:bg-[var(--color-bg-tertiary)] hover:text-[var(--color-text)] transition-colors"
+          className="flex items-center gap-1.5 px-3 py-1.5 text-xs rounded-full border border-[var(--color-border)] bg-[var(--color-card)] text-[var(--color-text-secondary)] hover:text-[var(--color-text)] hover:shadow-[var(--shadow-card)] transition-all"
         >
           <FolderTree size={14} />
           {t('note.category')}
         </button>
         <button
           onClick={onDownload}
-          className="flex items-center gap-1.5 px-3 py-1.5 text-xs rounded-md bg-[var(--color-bg-secondary)] text-[var(--color-text-secondary)] hover:bg-[var(--color-bg-tertiary)] hover:text-[var(--color-text)] transition-colors"
+          className="flex items-center gap-1.5 px-3 py-1.5 text-xs rounded-full border border-[var(--color-border)] bg-[var(--color-card)] text-[var(--color-text-secondary)] hover:text-[var(--color-text)] hover:shadow-[var(--shadow-card)] transition-all"
         >
           <Download size={14} />
           {t('note.download')}
         </button>
         <button
           onClick={onDelete}
-          className="flex items-center gap-1.5 px-3 py-1.5 text-xs rounded-md bg-red-500/10 text-red-500 hover:bg-red-500/20 transition-colors"
+          className="flex items-center gap-1.5 px-3 py-1.5 text-xs rounded-full bg-[var(--color-danger-bg)] text-[var(--color-danger)] hover:bg-[var(--color-danger-bg)] transition-colors"
         >
           <Trash2 size={14} />
           {t('note.delete')}

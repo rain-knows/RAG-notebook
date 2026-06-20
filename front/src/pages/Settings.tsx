@@ -15,11 +15,11 @@ export default function Settings() {
   }
 
   return (
-    <div className="max-w-2xl mx-auto py-8 px-6">
-      <h1 className="font-heading text-xl font-semibold text-[var(--color-text)] mb-8">{t('settings.title')}</h1>
+    <div className="max-w-3xl mx-auto py-8 px-6">
+      <h1 className="font-heading text-2xl font-semibold tracking-tight text-[var(--color-text)] mb-8">{t('settings.title')}</h1>
 
       <div className="space-y-6">
-        <div className="bg-[var(--color-card)] rounded-lg border border-[var(--color-border)] p-6 space-y-4">
+        <div className="bg-[var(--color-card)] rounded-xl border border-[var(--color-border)] p-6 space-y-4 shadow-[var(--shadow-card)]">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               {theme === 'light' ? <Sun size={18} className="text-[var(--color-text-secondary)]" /> : <Moon size={18} className="text-[var(--color-text-secondary)]" />}
@@ -37,7 +37,7 @@ export default function Settings() {
           </div>
         </div>
 
-        <div className="bg-[var(--color-card)] rounded-lg border border-[var(--color-border)] p-6 space-y-4">
+        <div className="bg-[var(--color-card)] rounded-xl border border-[var(--color-border)] p-6 space-y-4 shadow-[var(--shadow-card)]">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <Languages size={18} className="text-[var(--color-text-secondary)]" />
@@ -49,13 +49,13 @@ export default function Settings() {
             <div className="flex gap-2">
               <button
                 onClick={() => handleLangChange('zh-CN')}
-                className={`px-3 py-1.5 text-xs rounded-md transition-colors ${lang === 'zh-CN' ? 'bg-[var(--color-accent-bg)] text-[var(--color-accent)]' : 'bg-[var(--color-bg-secondary)] text-[var(--color-text-secondary)] hover:bg-[var(--color-bg-tertiary)]'}`}
+                className={`px-3 py-1.5 text-xs rounded-full border border-[var(--color-border)] transition-all ${lang === 'zh-CN' ? 'bg-[var(--color-text)] text-[var(--color-card)] shadow-[var(--shadow-card)]' : 'bg-[var(--color-card)] text-[var(--color-text-secondary)] hover:text-[var(--color-text)] hover:shadow-[var(--shadow-card)]'}`}
               >
                 中文
               </button>
               <button
                 onClick={() => handleLangChange('en-US')}
-                className={`px-3 py-1.5 text-xs rounded-md transition-colors ${lang === 'en-US' ? 'bg-[var(--color-accent-bg)] text-[var(--color-accent)]' : 'bg-[var(--color-bg-secondary)] text-[var(--color-text-secondary)] hover:bg-[var(--color-bg-tertiary)]'}`}
+                className={`px-3 py-1.5 text-xs rounded-full border border-[var(--color-border)] transition-all ${lang === 'en-US' ? 'bg-[var(--color-text)] text-[var(--color-card)] shadow-[var(--shadow-card)]' : 'bg-[var(--color-card)] text-[var(--color-text-secondary)] hover:text-[var(--color-text)] hover:shadow-[var(--shadow-card)]'}`}
               >
                 English
               </button>

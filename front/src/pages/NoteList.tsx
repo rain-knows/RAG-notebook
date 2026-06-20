@@ -27,6 +27,15 @@ const CATEGORY_LABEL_MAP: Record<string, string> = {
   other: '其他',
 }
 
+const CATEGORY_COLORS: Record<string, string> = {
+  '': 'var(--color-accent)',
+  work: 'var(--color-timeline-read)',
+  study: 'var(--color-timeline-edit)',
+  life: 'var(--color-timeline-grep)',
+  project: 'var(--color-timeline-thinking)',
+  other: 'var(--color-timeline-done)',
+}
+
 const PREDEFINED_VALUES = new Set(['work', 'study', 'life', 'project', 'other'])
 
 const CATEGORY_ORDER_KEY = 'note_category_order'
@@ -282,15 +291,15 @@ export default function NoteList() {
   }
 
   return (
-    <div className="max-w-4xl mx-auto py-8 px-6">
+    <div className="max-w-5xl mx-auto py-8 px-6">
       <div className="flex items-center justify-between mb-6">
-        <h1 className="font-heading text-xl font-semibold text-[var(--color-text)]">
+        <h1 className="font-heading text-2xl font-semibold tracking-tight text-[var(--color-text)]">
           {selectMode ? t('note.batch.selected', { count: selectedIds.size }) : t('note.title')}
         </h1>
         {!selectMode && (
           <button
             onClick={() => navigate('/notes/new')}
-            className="flex items-center gap-2 px-4 py-2 rounded-md bg-[var(--color-accent)] text-white text-sm hover:bg-blue-700 transition-colors"
+            className="flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--color-accent)] text-[var(--color-accent-foreground)] text-sm font-medium hover:bg-[var(--color-accent-hover)] transition-colors shadow-[var(--shadow-card)]"
           >
             <Plus size={16} />
             {t('note.newNote')}
@@ -299,7 +308,7 @@ export default function NoteList() {
         {selectMode && (
           <button
             onClick={exitSelectMode}
-            className="px-4 py-2 text-sm rounded-md border border-[var(--color-border)] text-[var(--color-text-secondary)] hover:bg-[var(--color-bg-secondary)] transition-colors"
+            className="px-4 py-2 text-sm rounded-full border border-[var(--color-border)] bg-[var(--color-card)] text-[var(--color-text-secondary)] hover:text-[var(--color-text)] hover:shadow-[var(--shadow-card)] transition-all"
           >
             {t('note.batch.cancel')}
           </button>
@@ -308,7 +317,7 @@ export default function NoteList() {
 
       {!selectMode && (
         <>
-          <div className="flex gap-4 mb-6">
+          <div className="flex gap-3 mb-6">
             <form onSubmit={handleSearch} className="relative flex-1">
               <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--color-text-placeholder)]" />
               <input
@@ -316,12 +325,12 @@ export default function NoteList() {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder={t('note.search')}
-                className="w-full pl-9 pr-4 py-2 rounded-md border border-[var(--color-border)] bg-[var(--color-card)] text-sm text-[var(--color-text)] placeholder:text-[var(--color-text-placeholder)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]"
+                className="w-full h-10 pl-9 pr-4 rounded-md border border-[var(--color-border)] bg-[var(--color-card)] text-sm text-[var(--color-text)] placeholder:text-[var(--color-text-placeholder)] shadow-[var(--shadow-card)] focus:outline-none"
               />
             </form>
             <button
               onClick={() => setManageOpen(true)}
-              className="flex items-center gap-1.5 px-3 py-2 text-xs rounded-md border border-[var(--color-border)] text-[var(--color-text-secondary)] hover:bg-[var(--color-bg-secondary)] transition-colors shrink-0"
+              className="flex items-center gap-1.5 px-3 py-2 text-xs rounded-md border border-[var(--color-border)] bg-[var(--color-card)] text-[var(--color-text-secondary)] hover:text-[var(--color-text)] hover:shadow-[var(--shadow-card)] transition-all shrink-0"
             >
               <Settings2 size={14} />
               管理分类
@@ -333,10 +342,17 @@ export default function NoteList() {
               <button
                 key={cat.value}
                 onClick={() => setCategory(cat.value)}
-                className={`px-3 py-1.5 text-xs rounded-md transition-colors ${
+                style={{
+                  backgroundColor: category === cat.value ? (CATEGORY_COLORS[cat.value] || 'var(--color-accent)') : 'var(--color-card)',
+                  color: category === cat.value
+                    ? (cat.value === '' ? 'var(--color-accent-foreground)' : 'var(--color-text)')
+                    : 'var(--color-text-secondary)',
+                  borderColor: category === cat.value ? (CATEGORY_COLORS[cat.value] || 'var(--color-accent)') : 'var(--color-border)',
+                }}
+                className={`px-3 py-1.5 text-xs rounded-md border transition-colors ${
                   category === cat.value
-                    ? 'bg-[var(--color-accent-bg)] text-[var(--color-accent)]'
-                    : 'bg-[var(--color-bg-secondary)] text-[var(--color-text-secondary)] hover:bg-[var(--color-bg-tertiary)]'
+                    ? 'shadow-[var(--shadow-card)]'
+                    : 'bg-[var(--color-card)] border-[var(--color-border)] text-[var(--color-text-secondary)] hover:text-[var(--color-text)] hover:shadow-[var(--shadow-card)]'
                 }`}
               >
                 {cat.label}
@@ -365,7 +381,7 @@ export default function NoteList() {
           icon={<FileText size={48} />}
           message={t('note.empty')}
           action={
-            <button onClick={() => navigate('/notes/new')} className="px-4 py-2 text-sm rounded-md bg-[var(--color-accent)] text-white">
+            <button onClick={() => navigate('/notes/new')} className="px-4 py-2 text-sm rounded-full bg-[var(--color-accent)] text-[var(--color-accent-foreground)] shadow-[var(--shadow-card)]">
               {t('note.newNote')}
             </button>
           }
@@ -381,10 +397,10 @@ export default function NoteList() {
                 onPointerUp={() => handlePointerUp(note.id)}
                 onPointerMove={handlePointerMove}
                 onPointerLeave={clearLongPress}
-                className={`px-5 py-4 rounded-lg bg-[var(--color-card)] border cursor-pointer transition-colors ${
+                className={`px-5 py-4 rounded-lg bg-[var(--color-card)] border cursor-pointer transition-all shadow-[var(--shadow-card)] ${
                   isSelected
                     ? 'border-[var(--color-accent)] ring-1 ring-[var(--color-accent)]'
-                    : 'border-[var(--color-border)] hover:border-[var(--color-accent)]'
+                    : 'border-[var(--color-border)] hover:border-[var(--color-text-tertiary)] hover:shadow-[var(--shadow-float)]'
                 }`}
               >
                 <div className="flex items-start gap-3">
@@ -481,14 +497,14 @@ function CategoryModal({
   return open ? (
     <>
       <div className="fixed inset-0 bg-black/40 z-50" onClick={() => onOpenChange(false)} />
-      <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 bg-[var(--color-card)] rounded-lg shadow-xl p-6 w-[400px] max-w-[90vw]">
+      <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 bg-[var(--color-card)] rounded-xl border border-[var(--color-border)] shadow-[var(--shadow-float)] p-6 w-[400px] max-w-[90vw]">
         <h3 className="text-base font-medium text-[var(--color-text)] mb-4">{t('note.batch.categoryTitle')}</h3>
         <div className="flex flex-wrap gap-2 mb-4">
           {categories.map((cat) => (
             <button
               key={cat.value}
               onClick={() => onSelect(cat.value)}
-              className="px-3 py-1.5 text-xs rounded-md bg-[var(--color-bg-secondary)] text-[var(--color-text-secondary)] hover:bg-[var(--color-accent-bg)] hover:text-[var(--color-accent)] transition-colors"
+              className="px-3 py-1.5 text-xs rounded-full border border-[var(--color-border)] bg-[var(--color-card)] text-[var(--color-text-secondary)] hover:text-[var(--color-text)] hover:shadow-[var(--shadow-card)] transition-all"
             >
               {cat.label}
             </button>
@@ -502,12 +518,12 @@ function CategoryModal({
               value={customCategory}
               onChange={(e) => onCustomCategoryChange(e.target.value)}
               placeholder={t('note.batch.categoryCustomPlaceholder')}
-              className="flex-1 px-3 py-1.5 text-sm rounded-md border border-[var(--color-border)] bg-[var(--color-bg-secondary)] text-[var(--color-text)] placeholder:text-[var(--color-text-placeholder)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]"
+              className="flex-1 px-3 py-1.5 text-sm rounded-md border border-[var(--color-border)] bg-[var(--color-card)] text-[var(--color-text)] placeholder:text-[var(--color-text-placeholder)] shadow-[var(--shadow-card)] focus:outline-none"
             />
             <button
               onClick={() => { if (customCategory.trim()) onSelect(customCategory.trim()) }}
               disabled={!customCategory.trim()}
-              className="px-4 py-1.5 text-sm rounded-md bg-[var(--color-accent)] text-white disabled:opacity-40 transition-opacity"
+              className="px-4 py-1.5 text-sm rounded-full bg-[var(--color-accent)] text-[var(--color-accent-foreground)] disabled:opacity-40 transition-opacity shadow-[var(--shadow-card)]"
             >
               {t('common.confirm')}
             </button>

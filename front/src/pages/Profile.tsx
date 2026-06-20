@@ -131,19 +131,19 @@ export default function Profile() {
   ]
 
   return (
-    <div className="max-w-2xl mx-auto py-8 px-6">
+    <div className="max-w-3xl mx-auto py-8 px-6">
       <div className="flex items-center justify-between mb-6">
-        <h1 className="font-heading text-xl font-semibold text-[var(--color-text)]">{t('profile.title')}</h1>
+        <h1 className="font-heading text-2xl font-semibold tracking-tight text-[var(--color-text)]">{t('profile.title')}</h1>
         {!editing ? (
-          <button onClick={() => setEditing(true)} className="px-4 py-2 text-sm rounded-md border border-[var(--color-border)] text-[var(--color-text-secondary)] hover:bg-[var(--color-bg-secondary)] transition-colors">
+          <button onClick={() => setEditing(true)} className="px-4 py-2 text-sm rounded-full border border-[var(--color-border)] bg-[var(--color-card)] text-[var(--color-text-secondary)] hover:text-[var(--color-text)] hover:shadow-[var(--shadow-card)] transition-all">
             {t('profile.edit')}
           </button>
         ) : (
           <div className="flex gap-2">
-            <button onClick={() => setEditing(false)} className="px-4 py-2 text-sm rounded-md border border-[var(--color-border)] text-[var(--color-text-secondary)] hover:bg-[var(--color-bg-secondary)] transition-colors">
+            <button onClick={() => setEditing(false)} className="px-4 py-2 text-sm rounded-full border border-[var(--color-border)] bg-[var(--color-card)] text-[var(--color-text-secondary)] hover:text-[var(--color-text)] hover:shadow-[var(--shadow-card)] transition-all">
               <X size={14} className="inline mr-1" />{t('profile.cancel')}
             </button>
-            <button onClick={handleSave} disabled={loading} className="px-4 py-2 text-sm rounded-md bg-[var(--color-accent)] text-white hover:bg-blue-700 disabled:opacity-50 transition-colors">
+            <button onClick={handleSave} disabled={loading} className="px-4 py-2 text-sm rounded-full bg-[var(--color-accent)] text-[var(--color-accent-foreground)] hover:bg-[var(--color-accent-hover)] disabled:opacity-50 transition-colors shadow-[var(--shadow-card)]">
               <Save size={14} className="inline mr-1" />{t('profile.save')}
             </button>
           </div>
@@ -154,7 +154,7 @@ export default function Profile() {
         <div className="mb-4 px-4 py-2 rounded-md text-sm bg-[var(--color-success-bg)] text-[var(--color-success)]">{message}</div>
       )}
 
-      <div className="bg-[var(--color-card)] rounded-lg border border-[var(--color-border)] divide-y divide-[var(--color-divider)]">
+      <div className="bg-[var(--color-card)] rounded-xl border border-[var(--color-border)] divide-y divide-[var(--color-divider)] shadow-[var(--shadow-card)]">
         <div className="flex items-center gap-4 p-6">
           <div className="relative w-16 h-16 rounded-full bg-[var(--color-accent-bg)] flex items-center justify-center text-[var(--color-accent)] text-xl font-medium">
             {userInfo?.username ? (userInfo.username as string)[0].toUpperCase() : '?'}
@@ -178,7 +178,7 @@ export default function Profile() {
                 type={type}
                 value={form[key as keyof typeof form]}
                 onChange={(e) => setForm((f) => ({ ...f, [key]: e.target.value }))}
-                className="w-48 px-3 py-1.5 text-sm rounded-md border border-[var(--color-border)] bg-[var(--color-bg)] text-[var(--color-text)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]"
+                className="w-48 px-3 py-1.5 text-sm rounded-md border border-[var(--color-border)] bg-[var(--color-card)] text-[var(--color-text)] shadow-[var(--shadow-card)] focus:outline-none"
               />
             ) : (
               <span className="text-sm text-[var(--color-text)]">{form[key as keyof typeof form] || '-'}</span>
@@ -219,7 +219,7 @@ export default function Profile() {
                 value={form.bio}
                 onChange={(e) => setForm((f) => ({ ...f, bio: e.target.value }))}
                 rows={3}
-                className="w-48 px-3 py-1.5 text-sm rounded-md border border-[var(--color-border)] bg-[var(--color-bg)] text-[var(--color-text)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] resize-none"
+                className="w-48 px-3 py-1.5 text-sm rounded-md border border-[var(--color-border)] bg-[var(--color-card)] text-[var(--color-text)] shadow-[var(--shadow-card)] focus:outline-none resize-none"
               />
             ) : (
               <span className="text-sm text-[var(--color-text)] max-w-48 text-right">{form.bio || '-'}</span>
@@ -230,7 +230,7 @@ export default function Profile() {
 
       <button
         onClick={() => { setPwdOpen(true); setPwdError('') }}
-        className="mt-6 flex items-center gap-2 px-4 py-2 text-sm rounded-md border border-[var(--color-border)] text-[var(--color-text-secondary)] hover:bg-[var(--color-bg-secondary)] transition-colors"
+        className="mt-6 flex items-center gap-2 px-4 py-2 text-sm rounded-full border border-[var(--color-border)] bg-[var(--color-card)] text-[var(--color-text-secondary)] hover:text-[var(--color-text)] hover:shadow-[var(--shadow-card)] transition-all"
       >
         <Lock size={14} />
         {t('profile.changePassword')}
@@ -239,7 +239,7 @@ export default function Profile() {
       <Dialog.Root open={pwdOpen} onOpenChange={(open) => { setPwdOpen(open); if (!open) setPwdError('') }}>
         <Dialog.Portal>
           <Dialog.Overlay className="fixed inset-0 bg-black/40" />
-          <Dialog.Content className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-[var(--color-card)] rounded-lg shadow-xl p-6 w-[420px] max-w-[90vw]">
+          <Dialog.Content className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-[var(--color-card)] rounded-xl border border-[var(--color-border)] shadow-[var(--shadow-float)] p-6 w-[420px] max-w-[90vw]">
             <div className="flex items-center justify-between mb-5">
               <Dialog.Title className="text-base font-medium text-[var(--color-text)]">
                 {t('profile.changePassword')}
@@ -266,7 +266,7 @@ export default function Profile() {
                       type={showPwd[field === 'oldPassword' ? 'old' : field === 'newPassword' ? 'new' : 'confirm'] ? 'text' : 'password'}
                       value={pwdForm[field]}
                       onChange={(e) => setPwdForm((f) => ({ ...f, [field]: e.target.value }))}
-                      className="w-full px-4 py-2.5 pr-10 rounded-md border border-[var(--color-border)] bg-[var(--color-bg)] text-sm text-[var(--color-text)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] focus:border-transparent transition-colors"
+                      className="w-full px-4 py-2.5 pr-10 rounded-md border border-[var(--color-border)] bg-[var(--color-card)] text-sm text-[var(--color-text)] shadow-[var(--shadow-card)] focus:outline-none transition-colors"
                       placeholder={field === 'oldPassword' ? t('profile.oldPassword') : field === 'newPassword' ? t('profile.newPassword') : t('profile.confirmPassword')}
                     />
                     <button
@@ -282,13 +282,13 @@ export default function Profile() {
             </div>
 
             <div className="flex justify-end gap-3 mt-6">
-              <Dialog.Close className="px-4 py-2 text-sm rounded-md border border-[var(--color-border)] text-[var(--color-text-secondary)] hover:bg-[var(--color-bg-secondary)] transition-colors">
+              <Dialog.Close className="px-4 py-2 text-sm rounded-full border border-[var(--color-border)] bg-[var(--color-card)] text-[var(--color-text-secondary)] hover:text-[var(--color-text)] hover:shadow-[var(--shadow-card)] transition-all">
                 {t('profile.cancel')}
               </Dialog.Close>
               <button
                 onClick={handlePasswordChange}
                 disabled={pwdLoading}
-                className="flex items-center gap-2 px-4 py-2 text-sm rounded-md bg-[var(--color-accent)] text-white hover:bg-blue-700 disabled:opacity-50 transition-colors"
+                className="flex items-center gap-2 px-4 py-2 text-sm rounded-full bg-[var(--color-accent)] text-[var(--color-accent-foreground)] hover:bg-[var(--color-accent-hover)] disabled:opacity-50 transition-colors shadow-[var(--shadow-card)]"
               >
                 {pwdLoading ? (
                   <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />

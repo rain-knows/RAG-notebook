@@ -1,35 +1,47 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&family=Noto+Serif+SC:wght@400;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Noto+Sans+SC:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --font-heading: 'Noto Serif SC', 'Songti SC', serif;
-  --font-body: 'Noto Sans SC', 'PingFang SC', 'SF Pro Display', 'Helvetica Neue', sans-serif;
+  --font-heading: 'Inter', 'Noto Sans SC', 'PingFang SC', system-ui, sans-serif;
+  --font-body: 'Inter', 'Noto Sans SC', 'PingFang SC', system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', 'SF Mono', 'Consolas', monospace;
-  --color-bg: #F7F6F3;
-  --color-bg-secondary: #F0EFEC;
-  --color-bg-tertiary: #F0EFEC;
+  --color-bg: #F7F7F4;
+  --color-bg-secondary: #FAFAF7;
+  --color-bg-tertiary: #E6E5E0;
   --color-card: #FFFFFF;
-  --color-card-hover: #F9F9F8;
-  --color-text: #111111;
-  --color-text-secondary: #787774;
-  --color-text-tertiary: #A09E9A;
-  --color-text-placeholder: #BFBDB9;
-  --color-border: #EAEAEA;
-  --color-border-light: #F0F0EE;
-  --color-divider: #EEEEEC;
-  --color-accent: #1F6C9F;
-  --color-accent-bg: #E1F3FE;
-  --color-success: #346538;
-  --color-success-bg: #EDF3EC;
-  --color-danger: #9F2F2D;
-  --color-danger-bg: #FDEBEC;
-  --color-warning: #956400;
-  --color-warning-bg: #FBF3DB;
-  --color-shadow: rgba(0, 0, 0, 0.04);
-  --radius-sm: 4px;
+  --color-card-hover: #FAFAF7;
+  --color-text: #26251E;
+  --color-text-secondary: #5A5852;
+  --color-text-tertiary: #807D72;
+  --color-text-placeholder: #A09C92;
+  --color-border: #E6E5E0;
+  --color-border-light: #EFEEE8;
+  --color-divider: #E6E5E0;
+  --color-accent: #F54E00;
+  --color-accent-foreground: #FFFFFF;
+  --color-accent-hover: #D04200;
+  --color-accent-bg: #FFE5D6;
+  --color-link: #356DAD;
+  --color-link-bg: #DCE9F8;
+  --color-success: #1F8A65;
+  --color-success-bg: #DCEEDF;
+  --color-danger: #CF2D56;
+  --color-danger-hover: #A92143;
+  --color-danger-bg: #F8D7E0;
+  --color-warning: #C08532;
+  --color-warning-bg: #F7E7C8;
+  --color-timeline-thinking: #DFA88F;
+  --color-timeline-grep: #9FC9A2;
+  --color-timeline-read: #9FBBE0;
+  --color-timeline-edit: #C0A8DD;
+  --color-timeline-done: #C08532;
+  --color-shadow: rgba(38, 37, 30, 0.08);
+  --shadow-card: 0 0 0 1px var(--color-border);
+  --shadow-float: 0 0 0 1px var(--color-border), 0 12px 32px rgba(38, 37, 30, 0.08);
+  --radius-sm: 6px;
   --radius-md: 8px;
   --radius-lg: 12px;
   --space-xs: 4px;
@@ -45,21 +57,29 @@
 }
 
 .dark {
-  --color-bg: #1A1A1A;
-  --color-bg-secondary: #232323;
-  --color-bg-tertiary: #2A2A2A;
-  --color-card: #2A2A2A;
-  --color-card-hover: #323232;
-  --color-text: #E8E8E8;
-  --color-text-secondary: #A0A0A0;
-  --color-text-tertiary: #707070;
-  --color-text-placeholder: #505050;
-  --color-border: #3A3A3A;
-  --color-border-light: #333333;
-  --color-divider: #333333;
-  --color-accent: #4A9ED6;
-  --color-accent-bg: #1A2E3E;
-  --color-shadow: rgba(0, 0, 0, 0.2);
+  --color-bg: #1F1E19;
+  --color-bg-secondary: #292821;
+  --color-bg-tertiary: #38362D;
+  --color-card: #26251E;
+  --color-card-hover: #302F27;
+  --color-text: #F7F7F4;
+  --color-text-secondary: #D2D0C8;
+  --color-text-tertiary: #A09C92;
+  --color-text-placeholder: #807D72;
+  --color-border: #444238;
+  --color-border-light: #38362D;
+  --color-divider: #444238;
+  --color-accent: #F54E00;
+  --color-accent-foreground: #FFFFFF;
+  --color-accent-hover: #FF6B2A;
+  --color-accent-bg: #4A2618;
+  --color-link: #9FBBE0;
+  --color-link-bg: #243348;
+  --color-success: #9FC9A2;
+  --color-success-bg: #24382B;
+  --color-shadow: rgba(0, 0, 0, 0.25);
+  --shadow-card: 0 0 0 1px var(--color-border);
+  --shadow-float: 0 0 0 1px var(--color-border), 0 16px 40px rgba(0, 0, 0, 0.35);
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -76,6 +96,7 @@ body {
   line-height: var(--line-height-normal);
   color: var(--color-text);
   background-color: var(--color-bg);
+  font-feature-settings: "ss01", "ss02";
 }
 
 #root {
@@ -84,8 +105,30 @@ body {
 
 ::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--color-text-tertiary); border-radius: 3px; }
+::-webkit-scrollbar-thumb { background: var(--color-text-tertiary); border-radius: 999px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--color-text-secondary); }
+
+::selection {
+  background: var(--color-text);
+  color: var(--color-card);
+}
+
+button, input, textarea, select {
+  font: inherit;
+}
+
+button {
+  letter-spacing: 0;
+}
+
+input, textarea, select {
+  box-shadow: inset 0 0 0 1px transparent;
+}
+
+input:focus, textarea:focus, select:focus {
+  border-color: var(--color-accent) !important;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent) 12%, transparent);
+}
 
 /* ==== Tiptap Editor overrides ==== */
 

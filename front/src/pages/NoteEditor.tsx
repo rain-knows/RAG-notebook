@@ -195,7 +195,7 @@ export default function NoteEditor() {
           <button
             onClick={handleSave}
             disabled={saving}
-            className="flex items-center gap-1.5 px-4 h-8 text-sm font-medium rounded-lg bg-[var(--color-accent)] text-white hover:opacity-90 disabled:opacity-40 transition-all ml-1"
+            className="flex items-center gap-1.5 px-4 h-8 text-sm font-medium rounded-lg bg-[var(--color-accent)] text-[var(--color-accent-foreground)] hover:opacity-90 disabled:opacity-40 transition-all ml-1"
           >
             <Save size={15} />
             {saving ? '保存中' : t('note.save')}
@@ -232,7 +232,7 @@ export default function NoteEditor() {
                     onClick={() => setCategory(category === cat.value ? '' : cat.value)}
                     className={`px-3 py-1 text-xs rounded-full font-medium transition-all ${
                       category === cat.value
-                        ? 'bg-[var(--color-accent)] text-white shadow-sm'
+                        ? 'bg-[var(--color-accent)] text-[var(--color-accent-foreground)] shadow-sm'
                         : 'bg-[var(--color-bg-secondary)] text-[var(--color-text-secondary)] hover:bg-[var(--color-bg-tertiary)] hover:text-[var(--color-text)]'
                     }`}
                   >

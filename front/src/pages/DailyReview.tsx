@@ -80,9 +80,9 @@ export default function DailyReview() {
   const handleDoneThenNext = () => advance(true)
 
   return (
-    <div className="max-w-2xl mx-auto py-8 px-6">
+    <div className="max-w-3xl mx-auto py-8 px-6">
       <div className="flex items-center justify-between mb-6">
-        <h1 className="font-heading text-xl font-semibold text-[var(--color-text)]">{t('review.title')}</h1>
+        <h1 className="font-heading text-2xl font-semibold tracking-tight text-[var(--color-text)]">{t('review.title')}</h1>
         <div className="flex items-center gap-3">
           {!loading && items.length > 0 && (
             <span className="text-xs text-[var(--color-text-tertiary)]">{t('review.progress')}: {doneCount}/{items.length}</span>
@@ -97,7 +97,7 @@ export default function DailyReview() {
           ))}
         </div>
       ) : completed ? (
-        <div className="bg-[var(--color-card)] rounded-lg border border-[var(--color-border)] p-8 text-center">
+        <div className="bg-[var(--color-card)] rounded-xl border border-[var(--color-border)] p-8 text-center shadow-[var(--shadow-card)]">
           <GraduationCap size={48} className="mx-auto mb-4 text-[var(--color-success)]" />
           <p className="text-base font-medium text-[var(--color-text)] mb-2">{t('review.allDone')}</p>
           <p className="text-sm text-[var(--color-text-tertiary)]">{t('review.progress')}: {doneCount}/{items.length}</p>
@@ -107,21 +107,21 @@ export default function DailyReview() {
       ) : (
         <div className="space-y-4">
           {!showQuiz ? (
-            <div className="bg-[var(--color-card)] rounded-lg border border-[var(--color-border)] p-6">
+            <div className="bg-[var(--color-card)] rounded-xl border border-[var(--color-border)] p-6 shadow-[var(--shadow-card)]">
               <h3 className="text-base font-medium text-[var(--color-text)] mb-3">{current?.title}</h3>
               <p className="text-xs text-[var(--color-text-tertiary)] mb-4">
                 {t('review.today')} | {current?.review_count || 0}次回顾
               </p>
               <button
                 onClick={() => handleStartQuiz(current.note_id)}
-                className="flex items-center gap-2 px-4 py-2 text-sm rounded-md bg-[var(--color-accent)] text-white hover:bg-blue-700 transition-colors"
+                className="flex items-center gap-2 px-4 py-2 text-sm rounded-full bg-[var(--color-accent)] text-[var(--color-accent-foreground)] hover:bg-[var(--color-accent-hover)] transition-colors shadow-[var(--shadow-card)]"
               >
                 {t('review.question')}
                 <ChevronRight size={14} />
               </button>
             </div>
           ) : questionLoading ? (
-            <div className="bg-[var(--color-card)] rounded-lg border border-[var(--color-border)] p-6 space-y-4">
+            <div className="bg-[var(--color-card)] rounded-xl border border-[var(--color-border)] p-6 space-y-4 shadow-[var(--shadow-card)]">
               <div className="h-4 w-3/4 bg-[var(--color-bg-tertiary)] rounded animate-pulse" />
               <div className="space-y-2">
                 {[1, 2, 3, 4].map((i) => (
@@ -130,7 +130,7 @@ export default function DailyReview() {
               </div>
             </div>
           ) : (
-            <div className="bg-[var(--color-card)] rounded-lg border border-[var(--color-border)] p-6 space-y-4">
+            <div className="bg-[var(--color-card)] rounded-xl border border-[var(--color-border)] p-6 space-y-4 shadow-[var(--shadow-card)]">
               <h3 className="text-sm font-medium text-[var(--color-text)]">{currentQuestion?.question}</h3>
               <div className="space-y-2">
                 {(currentQuestion?.choices ?? []).map((opt, i) => {
@@ -178,11 +178,11 @@ export default function DailyReview() {
                 <div className="flex justify-between items-center">
                   <button
                     onClick={handleDoneThenNext}
-                    className="flex items-center gap-2 px-4 py-2 text-sm rounded-md bg-[var(--color-success)] text-white hover:bg-green-700 transition-colors"
+                    className="flex items-center gap-2 px-4 py-2 text-sm rounded-full bg-[var(--color-success)] text-white hover:bg-[var(--color-link)] transition-colors shadow-[var(--shadow-card)]"
                   >
                     {t('review.done')}
                   </button>
-                  <button onClick={handleConfirm} className="flex items-center gap-2 px-4 py-2 text-sm rounded-md bg-[var(--color-accent)] text-white hover:bg-blue-700 transition-colors">
+                  <button onClick={handleConfirm} className="flex items-center gap-2 px-4 py-2 text-sm rounded-full bg-[var(--color-accent)] text-[var(--color-accent-foreground)] hover:bg-[var(--color-accent-hover)] transition-colors shadow-[var(--shadow-card)]">
                     {t('common.confirm')}
                     <ChevronRight size={14} />
                   </button>
@@ -192,7 +192,7 @@ export default function DailyReview() {
               {showResult && currentIndex >= items.length - 1 && (
                 <button
                   onClick={handleDoneThenNext}
-                  className="w-full flex items-center justify-center gap-2 px-4 py-2.5 text-sm rounded-md bg-[var(--color-accent)] text-white hover:bg-blue-700 transition-colors"
+                  className="w-full flex items-center justify-center gap-2 px-4 py-2.5 text-sm rounded-full bg-[var(--color-accent)] text-[var(--color-accent-foreground)] hover:bg-[var(--color-accent-hover)] transition-colors shadow-[var(--shadow-card)]"
                 >
                   <GraduationCap size={16} />
                   {t('review.done')}

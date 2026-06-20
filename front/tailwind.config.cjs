@@ -5,46 +5,46 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        heading: ['Noto Serif SC', 'Songti SC', 'serif'],
-        body: ['Noto Sans SC', 'PingFang SC', 'SF Pro Display', 'Helvetica Neue', 'sans-serif'],
+        heading: ['Inter', 'Noto Sans SC', 'PingFang SC', 'system-ui', 'sans-serif'],
+        body: ['Inter', 'Noto Sans SC', 'PingFang SC', 'system-ui', 'sans-serif'],
         mono: ['JetBrains Mono', 'SF Mono', 'Consolas', 'monospace'],
       },
       colors: {
         bg: {
-          DEFAULT: '#F7F6F3',
-          secondary: '#F0EFEC',
-          tertiary: '#F0EFEC',
+          DEFAULT: '#F7F7F4',
+          secondary: '#FAFAF7',
+          tertiary: '#E6E5E0',
         },
         card: {
           DEFAULT: '#FFFFFF',
-          hover: '#F9F9F8',
+          hover: '#FAFAF7',
         },
         text: {
-          DEFAULT: '#111111',
-          secondary: '#787774',
-          tertiary: '#A09E9A',
-          placeholder: '#BFBDB9',
+          DEFAULT: '#26251E',
+          secondary: '#5A5852',
+          tertiary: '#807D72',
+          placeholder: '#A09C92',
         },
         border: {
-          DEFAULT: '#EAEAEA',
-          light: '#F0F0EE',
+          DEFAULT: '#E6E5E0',
+          light: '#EFEEE8',
         },
-        divider: '#EEEEEC',
+        divider: '#E6E5E0',
         accent: {
-          DEFAULT: '#1F6C9F',
-          bg: '#E1F3FE',
+          DEFAULT: '#F54E00',
+          bg: '#FFE5D6',
         },
         success: {
-          DEFAULT: '#346538',
-          bg: '#EDF3EC',
+          DEFAULT: '#1F8A65',
+          bg: '#DCEEDF',
         },
         danger: {
-          DEFAULT: '#9F2F2D',
-          bg: '#FDEBEC',
+          DEFAULT: '#CF2D56',
+          bg: '#F8D7E0',
         },
         warning: {
-          DEFAULT: '#956400',
-          bg: '#FBF3DB',
+          DEFAULT: '#C08532',
+          bg: '#F7E7C8',
         },
       },
       spacing: {
@@ -57,7 +57,7 @@ export default {
         '3xl': '64px',
       },
       borderRadius: {
-        sm: '4px',
+        sm: '6px',
         md: '8px',
         lg: '12px',
       },

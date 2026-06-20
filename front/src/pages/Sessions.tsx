@@ -49,15 +49,15 @@ export default function Sessions() {
   }
 
   return (
-    <div className="max-w-3xl mx-auto py-8 px-6">
+    <div className="max-w-4xl mx-auto py-8 px-6">
       <div className="flex items-center justify-between mb-6">
-        <h1 className="font-heading text-xl font-semibold text-[var(--color-text)]">{t('chat.title')}</h1>
+        <h1 className="font-heading text-2xl font-semibold tracking-tight text-[var(--color-text)]">{t('chat.title')}</h1>
         <button
           onClick={() => {
             sessionStorage.removeItem('lastSessionId')
             navigate('/chat')
           }}
-          className="flex items-center gap-2 px-4 py-2 rounded-md bg-[var(--color-accent)] text-white text-sm hover:bg-blue-700 transition-colors"
+          className="flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--color-accent)] text-[var(--color-accent-foreground)] text-sm font-medium hover:bg-[var(--color-accent-hover)] transition-colors shadow-[var(--shadow-card)]"
         >
           <Plus size={16} />
           {t('chat.newSession')}
@@ -80,7 +80,7 @@ export default function Sessions() {
                 sessionStorage.removeItem('lastSessionId')
                 navigate('/chat')
               }}
-              className="px-4 py-2 text-sm rounded-md bg-[var(--color-accent)] text-white"
+              className="px-4 py-2 text-sm rounded-full bg-[var(--color-accent)] text-[var(--color-accent-foreground)] shadow-[var(--shadow-card)]"
             >
               {t('chat.newSession')}
             </button>
@@ -92,7 +92,7 @@ export default function Sessions() {
             <div
               key={session.id}
               onClick={() => navigate(`/chat/${session.id}`)}
-              className="flex items-center justify-between px-4 py-3 rounded-lg bg-[var(--color-card)] border border-[var(--color-border)] hover:border-[var(--color-accent)] cursor-pointer transition-colors"
+              className="flex items-center justify-between px-4 py-3 rounded-lg bg-[var(--color-card)] border border-[var(--color-border)] shadow-[var(--shadow-card)] hover:border-[var(--color-text-tertiary)] hover:shadow-[var(--shadow-float)] cursor-pointer transition-all"
             >
               <div className="flex items-center gap-3 min-w-0">
                 <MessageSquare size={16} className="text-[var(--color-text-tertiary)] shrink-0" />

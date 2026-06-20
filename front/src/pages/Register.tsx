@@ -57,7 +57,7 @@ export default function Register() {
   return (
     <div className="space-y-8">
       <div className="text-center">
-        <h1 className="font-heading text-2xl font-semibold text-[var(--color-text)]">{t('auth.register')}</h1>
+        <h1 className="font-heading text-3xl font-semibold tracking-tight text-[var(--color-text)]">{t('auth.register')}</h1>
         <p className="mt-2 text-sm text-[var(--color-text-secondary)]">{t('auth.register')}</p>
       </div>
 
@@ -75,7 +75,7 @@ export default function Register() {
               type={type}
               value={form[key as keyof typeof form]}
               onChange={(e) => handleChange(key, e.target.value)}
-              className="w-full px-4 py-2.5 rounded-md border border-[var(--color-border)] bg-[var(--color-card)] text-sm text-[var(--color-text)] placeholder:text-[var(--color-text-placeholder)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] focus:border-transparent transition-colors"
+              className="w-full px-4 py-2.5 rounded-md border border-[var(--color-border)] bg-[var(--color-card)] text-sm text-[var(--color-text)] placeholder:text-[var(--color-text-placeholder)] shadow-[var(--shadow-card)] focus:outline-none transition-colors"
               placeholder={label}
             />
           </div>
@@ -84,7 +84,7 @@ export default function Register() {
         <button
           type="submit"
           disabled={loading}
-          className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-md bg-[var(--color-accent)] text-white text-sm font-medium hover:bg-blue-700 disabled:opacity-50 transition-colors"
+          className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-full bg-[var(--color-accent)] text-[var(--color-accent-foreground)] text-sm font-medium hover:bg-[var(--color-accent-hover)] disabled:opacity-50 transition-colors shadow-[var(--shadow-card)]"
         >
           {loading ? (
             <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
