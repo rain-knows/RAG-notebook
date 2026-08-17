@@ -22,12 +22,6 @@ const quickQuestions = [
   'RAG 是什么？',
 ]
 
-const quickQuestionColors = [
-  'var(--color-timeline-thinking)',
-  'var(--color-timeline-read)',
-  'var(--color-timeline-edit)',
-]
-
 export default function AIChat() {
   const { sessionId } = useParams()
   const navigate = useNavigate()
@@ -174,7 +168,7 @@ export default function AIChat() {
                 setMessages([])
                 navigate('/chat')
               }}
-              className="px-3 py-1.5 text-xs rounded-md border border-[var(--color-border)] bg-[var(--color-card)] text-[var(--color-text-secondary)] hover:text-[var(--color-text)] hover:shadow-[var(--shadow-card)] transition-all"
+              className="px-3 py-1.5 text-xs rounded-md border border-[var(--color-border)] text-[var(--color-text-secondary)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition-colors"
             >
               {t('chat.newSession')}
             </button>
@@ -186,18 +180,17 @@ export default function AIChat() {
           {messages.length === 0 && !isLoading && (
             <div className="py-16 text-center space-y-6">
               <div className="flex justify-center">
-                <div className="w-16 h-16 rounded-xl bg-[var(--color-card)] border border-[var(--color-border)] shadow-[var(--shadow-card)] flex items-center justify-center">
+                <div className="w-16 h-16 rounded-2xl bg-[var(--color-accent-bg)] flex items-center justify-center">
                   <Sparkles size={28} className="text-[var(--color-accent)]" />
                 </div>
               </div>
-              <h2 className="font-heading text-2xl font-semibold tracking-tight text-[var(--color-text)]">{t('chat.welcome')}</h2>
+              <h2 className="font-heading text-xl text-[var(--color-text)]">{t('chat.welcome')}</h2>
               <div className="flex flex-wrap justify-center gap-2 max-w-md mx-auto">
-                {quickQuestions.map((q, index) => (
+                {quickQuestions.map((q) => (
                   <button
                     key={q}
                     onClick={() => handleSend(q)}
-                    style={{ backgroundColor: quickQuestionColors[index % quickQuestionColors.length] }}
-                    className="px-4 py-2 text-xs rounded-full border border-[var(--color-border)] bg-[var(--color-card)] text-[var(--color-text-secondary)] hover:text-[var(--color-text)] hover:shadow-[var(--shadow-card)] transition-all"
+                    className="px-4 py-2 text-xs rounded-full border border-[var(--color-border)] text-[var(--color-text-secondary)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition-colors"
                   >
                     {q}
                   </button>
@@ -215,13 +208,13 @@ export default function AIChat() {
           {messages.map((msg, i) => (
             <div key={i} className={`flex gap-3 ${msg.role === 'user' ? 'justify-end' : ''}`}>
               {msg.role === 'assistant' && (
-                <div className="w-8 h-8 rounded-md bg-[var(--color-card)] border border-[var(--color-border)] flex items-center justify-center shrink-0">
+                <div className="w-8 h-8 rounded-lg bg-[var(--color-accent-bg)] flex items-center justify-center shrink-0">
                   <Bot size={16} className="text-[var(--color-accent)]" />
                 </div>
               )}
               <div className={`max-w-[75%] ${msg.role === 'user' ? 'order-first' : ''}`}>
                 {msg.role === 'user' ? (
-                  <div className="px-4 py-2.5 rounded-xl bg-[var(--color-accent)] text-[var(--color-accent-foreground)] text-sm shadow-[var(--shadow-card)]">
+                  <div className="px-4 py-2.5 rounded-2xl bg-[var(--color-accent)] text-white text-sm">
                     {msg.content}
                   </div>
                 ) : (
@@ -251,16 +244,16 @@ export default function AIChat() {
                     </div>
                     {hasStreamingAssistant && i === messages.length - 1 && (
                       <div className="flex gap-1 mt-3">
-                        <span className="w-2 h-2 rounded-full bg-[var(--color-timeline-thinking)] animate-bounce" style={{ animationDelay: '0ms' }} />
-                        <span className="w-2 h-2 rounded-full bg-[var(--color-timeline-read)] animate-bounce" style={{ animationDelay: '150ms' }} />
-                        <span className="w-2 h-2 rounded-full bg-[var(--color-timeline-edit)] animate-bounce" style={{ animationDelay: '300ms' }} />
+                        <span className="w-2 h-2 rounded-full bg-[var(--color-accent)] animate-bounce" style={{ animationDelay: '0ms' }} />
+                        <span className="w-2 h-2 rounded-full bg-[var(--color-accent)] animate-bounce" style={{ animationDelay: '150ms' }} />
+                        <span className="w-2 h-2 rounded-full bg-[var(--color-accent)] animate-bounce" style={{ animationDelay: '300ms' }} />
                       </div>
                     )}
                   </>
                 )}
               </div>
               {msg.role === 'user' && (
-                <div className="w-8 h-8 rounded-md bg-[var(--color-bg-secondary)] border border-[var(--color-border)] flex items-center justify-center shrink-0">
+                <div className="w-8 h-8 rounded-lg bg-[var(--color-bg-tertiary)] flex items-center justify-center shrink-0">
                   <User size={16} className="text-[var(--color-text-secondary)]" />
                 </div>
               )}
@@ -269,7 +262,7 @@ export default function AIChat() {
 
           {loading && !hasStreamingAssistant && (
             <div className="flex gap-3">
-              <div className="w-8 h-8 rounded-md bg-[var(--color-card)] border border-[var(--color-border)] flex items-center justify-center shrink-0">
+              <div className="w-8 h-8 rounded-lg bg-[var(--color-accent-bg)] flex items-center justify-center shrink-0">
                 <Bot size={16} className="text-[var(--color-accent)]" />
               </div>
               <div className="space-y-2 flex-1">
@@ -290,9 +283,9 @@ export default function AIChat() {
                   </div>
                 )}
                 <div className="flex gap-1">
-                  <span className="w-2 h-2 rounded-full bg-[var(--color-timeline-thinking)] animate-bounce" style={{ animationDelay: '0ms' }} />
-                  <span className="w-2 h-2 rounded-full bg-[var(--color-timeline-read)] animate-bounce" style={{ animationDelay: '150ms' }} />
-                  <span className="w-2 h-2 rounded-full bg-[var(--color-timeline-edit)] animate-bounce" style={{ animationDelay: '300ms' }} />
+                  <span className="w-2 h-2 rounded-full bg-[var(--color-accent)] animate-bounce" style={{ animationDelay: '0ms' }} />
+                  <span className="w-2 h-2 rounded-full bg-[var(--color-accent)] animate-bounce" style={{ animationDelay: '150ms' }} />
+                  <span className="w-2 h-2 rounded-full bg-[var(--color-accent)] animate-bounce" style={{ animationDelay: '300ms' }} />
                 </div>
               </div>
             </div>
@@ -310,12 +303,12 @@ export default function AIChat() {
             onKeyDown={handleKeyDown}
             placeholder={t('chat.input')}
             rows={1}
-            className="flex-1 px-4 py-2.5 rounded-md border border-[var(--color-border)] bg-[var(--color-card)] text-sm text-[var(--color-text)] placeholder:text-[var(--color-text-placeholder)] resize-none shadow-[var(--shadow-card)] focus:outline-none"
+            className="flex-1 px-4 py-2.5 rounded-lg border border-[var(--color-border)] bg-[var(--color-bg)] text-sm text-[var(--color-text)] placeholder:text-[var(--color-text-placeholder)] resize-none focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]"
           />
           <button
             onClick={() => handleSend(input)}
             disabled={!input.trim() || loading}
-            className="flex items-center justify-center w-10 h-10 rounded-full bg-[var(--color-accent)] text-[var(--color-accent-foreground)] hover:bg-[var(--color-accent-hover)] disabled:opacity-40 transition-colors shrink-0 shadow-[var(--shadow-card)]"
+            className="flex items-center justify-center w-10 h-10 rounded-lg bg-[var(--color-accent)] text-white hover:bg-blue-700 disabled:opacity-40 transition-colors shrink-0"
           >
             {loading ? <Loader2 size={16} className="animate-spin" /> : <Send size={16} />}
           </button>

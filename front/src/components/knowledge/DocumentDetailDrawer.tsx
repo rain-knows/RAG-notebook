@@ -38,7 +38,7 @@ export default function DocumentDetailDrawer({ filename, onClose }: DocumentDeta
     <Dialog.Root open={!!filename} onOpenChange={(open) => { if (!open) onClose() }}>
       <Dialog.Portal>
         <Dialog.Overlay className="fixed inset-0 bg-black/40" />
-        <Dialog.Content className="fixed top-0 right-0 h-full w-[640px] max-w-[90vw] bg-[var(--color-card)] border-l border-[var(--color-border)] shadow-[var(--shadow-float)] flex flex-col">
+        <Dialog.Content className="fixed top-0 right-0 h-full w-[640px] max-w-[90vw] bg-[var(--color-card)] shadow-xl flex flex-col">
           <div className="flex items-center justify-between px-6 py-4 border-b border-[var(--color-border)] shrink-0">
             <Dialog.Title className="text-base font-medium text-[var(--color-text)] truncate flex items-center gap-2">
               <FileText size={16} className="text-[var(--color-text-tertiary)] shrink-0" />
@@ -107,7 +107,7 @@ export default function DocumentDetailDrawer({ filename, onClose }: DocumentDeta
                 {detail.chunks.map((chunk) => (
                   <div
                     key={chunk.chunk_id}
-                    className="p-4 rounded-lg bg-[var(--color-card)] border border-[var(--color-border)] shadow-[var(--shadow-card)]"
+                    className="p-4 rounded-lg bg-[var(--color-bg-secondary)] border border-[var(--color-border)]"
                   >
                     <div className="flex items-center gap-2 mb-2 text-xs text-[var(--color-text-tertiary)]">
                       <span className="font-medium text-[var(--color-text-secondary)]">#{chunk.index + 1}</span>

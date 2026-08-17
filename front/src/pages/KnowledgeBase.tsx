@@ -131,13 +131,13 @@ export default function KnowledgeBase() {
   }
 
   return (
-    <div className="max-w-5xl mx-auto py-8 px-6">
+    <div className="max-w-4xl mx-auto py-8 px-6">
       <div className="flex items-center justify-between mb-6">
-        <h1 className="font-heading text-2xl font-semibold tracking-tight text-[var(--color-text)]">{t('knowledge.title')}</h1>
+        <h1 className="font-heading text-xl font-semibold text-[var(--color-text)]">{t('knowledge.title')}</h1>
         {docs.length > 0 && (
           <button
             onClick={() => setShowClean(true)}
-            className="flex items-center gap-2 px-4 py-2 text-sm rounded-full border border-[var(--color-border)] bg-[var(--color-card)] text-[var(--color-danger)] hover:bg-[var(--color-danger-bg)] transition-colors shadow-[var(--shadow-card)]"
+            className="flex items-center gap-2 px-4 py-2 text-sm rounded-md border border-[var(--color-border)] text-[var(--color-danger)] hover:bg-[var(--color-danger-bg)] transition-colors"
           >
             <Trash2 size={14} />
             {t('knowledge.cleanAll')}
@@ -149,8 +149,8 @@ export default function KnowledgeBase() {
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
-        className={`relative border border-dashed rounded-xl p-10 text-center transition-all shadow-[var(--shadow-card)] ${
-          dragOver ? 'border-[var(--color-accent)] bg-[var(--color-accent-bg)]' : 'border-[var(--color-border)] bg-[var(--color-card)] hover:border-[var(--color-text-tertiary)] hover:shadow-[var(--shadow-float)]'
+        className={`relative border-2 border-dashed rounded-lg p-10 text-center transition-colors ${
+          dragOver ? 'border-[var(--color-accent)] bg-[var(--color-accent-bg)]' : 'border-[var(--color-border)] hover:border-[var(--color-text-tertiary)]'
         }`}
       >
         <input
@@ -166,7 +166,7 @@ export default function KnowledgeBase() {
         <p className="text-xs text-[var(--color-text-tertiary)] mb-4">{t('knowledge.fileTypes')}</p>
         <button
           onClick={() => fileInputRef.current?.click()}
-          className="px-4 py-2 text-sm rounded-full bg-[var(--color-accent)] text-[var(--color-accent-foreground)] hover:bg-[var(--color-accent-hover)] transition-colors shadow-[var(--shadow-card)]"
+          className="px-4 py-2 text-sm rounded-md bg-[var(--color-accent)] text-white hover:bg-blue-700 transition-colors"
         >
           {t('knowledge.upload')}
         </button>
@@ -175,7 +175,7 @@ export default function KnowledgeBase() {
       {uploadFiles.length > 0 && (
         <div className="mt-4 space-y-2">
           {uploadFiles.map((uf, i) => (
-            <div key={i} className="flex items-center gap-3 px-4 py-3 rounded-lg bg-[var(--color-card)] border border-[var(--color-border)] shadow-[var(--shadow-card)]">
+            <div key={i} className="flex items-center gap-3 px-4 py-3 rounded-lg bg-[var(--color-card)] border border-[var(--color-border)]">
               {uf.status === 'success' ? (
                 <CheckCircle2 size={16} className="text-[var(--color-success)] shrink-0" />
               ) : uf.status === 'fail' ? (
@@ -215,7 +215,7 @@ export default function KnowledgeBase() {
               <div
                 key={doc.id}
                 onClick={() => setDetailFilename(doc.filename)}
-              className="flex items-center justify-between px-4 py-3 rounded-lg bg-[var(--color-card)] border border-[var(--color-border)] shadow-[var(--shadow-card)] hover:border-[var(--color-text-tertiary)] hover:shadow-[var(--shadow-float)] cursor-pointer transition-all"
+                className="flex items-center justify-between px-4 py-3 rounded-lg bg-[var(--color-card)] border border-[var(--color-border)] hover:border-[var(--color-accent)] cursor-pointer transition-colors"
               >
                 <div className="flex items-center gap-3 min-w-0">
                   <FileText size={16} className="text-[var(--color-text-tertiary)] shrink-0" />

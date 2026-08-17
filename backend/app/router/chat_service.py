@@ -6,6 +6,7 @@ from fastapi import HTTPException
 from app.agent.agent import get_agent_response
 from app.core.logger_handler import logger
 from app.rag.rag_service import RagService
+from app.rag.reorder_service import reorder_service
 from app.services import session_manager as sm
 
 
@@ -62,12 +63,7 @@ class ChatService:
         :return: 排序后的文档列表，包含文档内容和相似度
         """
         try:
-            from app.core.background_init import init_manager
-
-            if init_manager.reorder_service is None:
-                return [{"document": doc, "similarity": 0.0} for doc in documents]
-
-            result = await init_manager.reorder_service.reorder_documents(query, documents)
+            result = await reorder_service.reorder_documents(query, documents)
 
             if result["success"]:
                 logger.info(

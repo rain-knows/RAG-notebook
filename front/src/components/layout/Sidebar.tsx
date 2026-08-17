@@ -51,15 +51,15 @@ export default function Sidebar({ collapsed, onToggle }: SidebarProps) {
         collapsed ? 'w-16' : 'w-60'
       }`}
     >
-      <div className="flex items-center justify-between px-5 h-16 border-b border-[var(--color-border-light)]">
+      <div className="flex items-center justify-between px-5 h-16">
         {!collapsed && (
-          <h1 className="font-heading text-base font-semibold tracking-tight text-[var(--color-text)] truncate">
+          <h1 className="font-heading text-lg font-semibold text-[var(--color-text)] truncate">
             {t('app.name')}
           </h1>
         )}
         <button
           onClick={onToggle}
-          className="p-1.5 rounded-md border border-transparent text-[var(--color-text-secondary)] hover:border-[var(--color-border)] hover:bg-[var(--color-card)] hover:text-[var(--color-text)] transition-colors"
+          className="p-1.5 rounded-md text-[var(--color-text-secondary)] hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-text)] transition-colors"
           title={collapsed ? t('nav.expand') : t('nav.collapse')}
         >
           <Columns2 size={18} className={`transition-transform duration-300 ${collapsed ? 'rotate-180' : ''}`} />
@@ -73,9 +73,9 @@ export default function Sidebar({ collapsed, onToggle }: SidebarProps) {
             to={path}
             end={path === '/notes'}
             className={({ isActive }) =>
-              `relative flex items-center gap-3 px-3 py-2.5 rounded-md text-sm transition-colors ${
+              `flex items-center gap-3 px-3 py-2.5 rounded-md text-sm transition-colors ${
                 isActive
-                  ? 'bg-[var(--color-card)] text-[var(--color-text)] font-medium shadow-[var(--shadow-card)] before:absolute before:left-0 before:top-2 before:bottom-2 before:w-0.5 before:rounded-full before:bg-[var(--color-accent)]'
+                  ? 'bg-[var(--color-accent-bg)] text-[var(--color-accent)] font-medium'
                   : 'text-[var(--color-text-secondary)] hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-text)]'
               } ${collapsed ? 'justify-center' : ''}`
             }
@@ -93,9 +93,9 @@ export default function Sidebar({ collapsed, onToggle }: SidebarProps) {
             key={path}
             to={path}
             className={({ isActive }) =>
-              `relative flex items-center gap-3 px-3 py-2.5 rounded-md text-sm transition-colors ${
+              `flex items-center gap-3 px-3 py-2.5 rounded-md text-sm transition-colors ${
                 isActive
-                  ? 'bg-[var(--color-card)] text-[var(--color-text)] font-medium shadow-[var(--shadow-card)] before:absolute before:left-0 before:top-2 before:bottom-2 before:w-0.5 before:rounded-full before:bg-[var(--color-accent)]'
+                  ? 'bg-[var(--color-accent-bg)] text-[var(--color-accent)] font-medium'
                   : 'text-[var(--color-text-secondary)] hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-text)]'
               } ${collapsed ? 'justify-center' : ''}`
             }

@@ -7,6 +7,9 @@ import aiofiles
 from langchain_community.document_loaders import (
     PyPDFLoader,
     TextLoader,
+    UnstructuredMarkdownLoader,
+    UnstructuredPDFLoader,
+    UnstructuredPowerPointLoader,
 )
 from langchain_core.documents import Document
 
@@ -94,8 +97,6 @@ async def pdf_loader(file_path: str, password: str = None) -> list[Document]:
         return await asyncio.to_thread(loader.load)
 
     try:
-        from langchain_community.document_loaders import UnstructuredPDFLoader
-
         loader = UnstructuredPDFLoader(abs_file_path)
         docs = await asyncio.to_thread(loader.load)
         if docs and any(len(doc.page_content.strip()) > 0 for doc in docs):
@@ -150,13 +151,11 @@ async def markdown_loader(file_path: str) -> list[Document]:
     """
     abs_file_path = get_abstract_path(file_path) if not os.path.isabs(file_path) else file_path
     try:
-        from langchain_community.document_loaders import UnstructuredMarkdownLoader
-
         loader = UnstructuredMarkdownLoader(abs_file_path, mode="single")
         return await asyncio.to_thread(loader.load)
     except Exception as e:
-        logger.warning(f"【Markdown文件加载】UnstructuredMarkdownLoader失败，回退为文本加载: {e}")
-        return await txt_loader(abs_file_path)
+        logger.error(f"【Markdown文件加载】加载文件 {abs_file_path} 时出错: {e}")
+        return []
 
 
 async def ppt_loader(file_path: str) -> list[Document]:
@@ -167,8 +166,6 @@ async def ppt_loader(file_path: str) -> list[Document]:
     """
     abs_file_path = get_abstract_path(file_path) if not os.path.isabs(file_path) else file_path
     try:
-        from langchain_community.document_loaders import UnstructuredPowerPointLoader
-
         loader = UnstructuredPowerPointLoader(abs_file_path, mode="single")
         return await asyncio.to_thread(loader.load)
     except Exception as e:
@@ -215,8 +212,6 @@ def pdf_loader_sync(file_path: str, password: str = None) -> list[Document]:
         return loader.load()
 
     try:
-        from langchain_community.document_loaders import UnstructuredPDFLoader
-
         loader = UnstructuredPDFLoader(abs_file_path)
         docs = loader.load()
         if docs and any(len(doc.page_content.strip()) > 0 for doc in docs):
@@ -270,13 +265,11 @@ def markdown_loader_sync(file_path: str) -> list[Document]:
     """
     abs_file_path = get_abstract_path(file_path) if not os.path.isabs(file_path) else file_path
     try:
-        from langchain_community.document_loaders import UnstructuredMarkdownLoader
-
         loader = UnstructuredMarkdownLoader(abs_file_path, mode="single")
         return loader.load()
     except Exception as e:
-        logger.warning(f"【Markdown文件加载】UnstructuredMarkdownLoader失败，回退为文本加载: {e}")
-        return txt_loader_sync(abs_file_path)
+        logger.error(f"【Markdown文件加载】加载文件 {abs_file_path} 时出错: {e}")
+        return []
 
 
 def ppt_loader_sync(file_path: str) -> list[Document]:
@@ -287,8 +280,6 @@ def ppt_loader_sync(file_path: str) -> list[Document]:
     """
     abs_file_path = get_abstract_path(file_path) if not os.path.isabs(file_path) else file_path
     try:
-        from langchain_community.document_loaders import UnstructuredPowerPointLoader
-
         loader = UnstructuredPowerPointLoader(abs_file_path, mode="single")
         return loader.load()
     except Exception as e:

@@ -26,23 +26,22 @@ const turndown = new TurndownService({
   bulletListMarker: '-',
   emDelimiter: '*',
   strongDelimiter: '**',
+  escape: (s: string) => {
+    return s
+      .replace(/[\\]/g, '\\\\')
+      .replace(/[*]/g, '\\*')
+      .replace(/^-/g, '\\-')
+      .replace(/^\+ /g, '\\+ ')
+      .replace(/^(=+)/g, '\\$1')
+      .replace(/^(#{1,6}) /g, '\\$1 ')
+      .replace(/[`]/g, '\\`')
+      .replace(/^~~~/g, '\\~~~')
+      .replace(/[[]/g, '\\[')
+      .replace(/[\]]/g, '\\]')
+      .replace(/^>/g, '\\>')
+      .replace(/[_]/g, '\\_')
+  },
 })
-
-turndown.escape = (s: string) => {
-  return s
-    .replace(/[\\]/g, '\\\\')
-    .replace(/[*]/g, '\\*')
-    .replace(/^-/g, '\\-')
-    .replace(/^\+ /g, '\\+ ')
-    .replace(/^(=+)/g, '\\$1')
-    .replace(/^(#{1,6}) /g, '\\$1 ')
-    .replace(/[`]/g, '\\`')
-    .replace(/^~~~/g, '\\~~~')
-    .replace(/[[]/g, '\\[')
-    .replace(/[\]]/g, '\\]')
-    .replace(/^>/g, '\\>')
-    .replace(/[_]/g, '\\_')
-}
 
 // Custom rule: Tiptap task list items → GFM checklist syntax
 turndown.addRule('taskListItem', {

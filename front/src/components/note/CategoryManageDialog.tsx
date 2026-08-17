@@ -42,6 +42,15 @@ function saveOrder(items: CategoryItem[]) {
   }
 }
 
+function getSavedOrder(): string[] {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY)
+    return raw ? JSON.parse(raw) : []
+  } catch {
+    return []
+  }
+}
+
 export default function CategoryManageDialog({
   open,
   onOpenChange,
@@ -108,7 +117,7 @@ export default function CategoryManageDialog({
   return (
     <>
       <div className="fixed inset-0 bg-black/40 z-50" onClick={() => onOpenChange(false)} />
-      <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 bg-[var(--color-card)] rounded-xl border border-[var(--color-border)] shadow-[var(--shadow-float)] p-6 w-[440px] max-w-[90vw] max-h-[80vh] flex flex-col">
+      <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 bg-[var(--color-card)] rounded-lg shadow-xl p-6 w-[440px] max-w-[90vw] max-h-[80vh] flex flex-col">
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-base font-medium text-[var(--color-text)]">{t('note.category')}管理</h3>
           <button
@@ -126,12 +135,12 @@ export default function CategoryManageDialog({
             onChange={(e) => setNewCategory(e.target.value)}
             onKeyDown={(e) => { if (e.key === 'Enter') handleCreate() }}
             placeholder="输入新分类名称"
-            className="flex-1 px-3 py-1.5 text-sm rounded-md border border-[var(--color-border)] bg-[var(--color-card)] text-[var(--color-text)] placeholder:text-[var(--color-text-placeholder)] shadow-[var(--shadow-card)] focus:outline-none"
+            className="flex-1 px-3 py-1.5 text-sm rounded-md border border-[var(--color-border)] bg-[var(--color-bg-secondary)] text-[var(--color-text)] placeholder:text-[var(--color-text-placeholder)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]"
           />
           <button
             onClick={handleCreate}
             disabled={!newCategory.trim()}
-            className="flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-full bg-[var(--color-accent)] text-[var(--color-accent-foreground)] disabled:opacity-40 transition-opacity shadow-[var(--shadow-card)]"
+            className="flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-md bg-[var(--color-accent)] text-white disabled:opacity-40 transition-opacity"
           >
             <Plus size={14} />
             新建
@@ -164,7 +173,7 @@ export default function CategoryManageDialog({
                 {!isPredefined && (
                   <button
                     onClick={() => setDeleteTarget(item)}
-                    className="p-1 rounded text-[var(--color-text-tertiary)] opacity-0 group-hover:opacity-100 hover:text-[var(--color-danger)] hover:bg-[var(--color-danger-bg)] transition-all"
+                    className="p-1 rounded text-[var(--color-text-tertiary)] opacity-0 group-hover:opacity-100 hover:text-red-500 hover:bg-red-500/10 transition-all"
                   >
                     <Trash2 size={14} />
                   </button>

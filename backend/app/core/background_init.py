@@ -91,13 +91,6 @@ class _BackgroundInitManager:
 
     async def _init_reranker(self):
         """检查并初始化重排序模型（触发 torch 等重型框架加载）"""
-        import os
-
-        if os.getenv("ENABLE_RERANKER", "false").lower() != "true":
-            logger.info("⏭️ 重排序模型初始化已跳过（ENABLE_RERANKER=false）")
-            self.reranker_ready.set()
-            return
-
         from app.rag.reorder_service import ReorderService, check_and_download_reranker_model
 
         await asyncio.to_thread(check_and_download_reranker_model)
