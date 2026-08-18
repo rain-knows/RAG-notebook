@@ -42,9 +42,9 @@ class ChatService:
         """处理删除会话逻辑"""
         await sm.session_manager.clear_session(session_id, user_id)
 
-    async def handle_get_all_sessions(self) -> list[str]:
-        """处理获取所有会话逻辑"""
-        session_ids = await sm.session_manager.get_all_session_ids()
+    async def handle_get_all_sessions(self, user_id: str) -> list[str]:
+        """处理获取当前用户的会话逻辑"""
+        session_ids = await sm.session_manager.get_all_session_ids(user_id)
         return session_ids
 
     async def handle_get_user_sessions(self, user_id: str, current_user_id: str) -> list[dict]:

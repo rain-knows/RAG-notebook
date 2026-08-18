@@ -26,22 +26,23 @@ const turndown = new TurndownService({
   bulletListMarker: '-',
   emDelimiter: '*',
   strongDelimiter: '**',
-  escape: (s: string) => {
-    return s
-      .replace(/[\\]/g, '\\\\')
-      .replace(/[*]/g, '\\*')
-      .replace(/^-/g, '\\-')
-      .replace(/^\+ /g, '\\+ ')
-      .replace(/^(=+)/g, '\\$1')
-      .replace(/^(#{1,6}) /g, '\\$1 ')
-      .replace(/[`]/g, '\\`')
-      .replace(/^~~~/g, '\\~~~')
-      .replace(/[[]/g, '\\[')
-      .replace(/[\]]/g, '\\]')
-      .replace(/^>/g, '\\>')
-      .replace(/[_]/g, '\\_')
-  },
 })
+
+turndown.escape = (s: string) => {
+  return s
+    .replace(/[\\]/g, '\\\\')
+    .replace(/[*]/g, '\\*')
+    .replace(/^-/g, '\\-')
+    .replace(/^\+ /g, '\\+ ')
+    .replace(/^(=+)/g, '\\$1')
+    .replace(/^(#{1,6}) /g, '\\$1 ')
+    .replace(/[`]/g, '\\`')
+    .replace(/^~~~/g, '\\~~~')
+    .replace(/[[]/g, '\\[')
+    .replace(/[\]]/g, '\\]')
+    .replace(/^>/g, '\\>')
+    .replace(/[_]/g, '\\_')
+}
 
 // Custom rule: Tiptap task list items → GFM checklist syntax
 turndown.addRule('taskListItem', {
@@ -250,8 +251,11 @@ const TiptapEditor = forwardRef<TiptapEditorHandle, TiptapEditorProps>(({ value,
   const ghostFromRef = useRef(0)
   const [preview, setPreview] = useState(false)
   const [ghost, setGhost] = useState<{ text: string; left: number; top: number } | null>(null)
-  onChangeRef.current = onChange
-  autocompleteRef.current = onAutocomplete
+
+  useEffect(() => {
+    onChangeRef.current = onChange
+    autocompleteRef.current = onAutocomplete
+  }, [onChange, onAutocomplete])
 
   const editor = useEditor({
     extensions: [
@@ -432,7 +436,9 @@ const TiptapEditor = forwardRef<TiptapEditorHandle, TiptapEditorProps>(({ value,
   useImperativeHandle(ref, () => ({
     scrollToHeading: (text: string, level: number) => {
       if (!editor) return
-      const normalize = (s: string) => s.replace(/\\([.!\[\]()*_`~\-])/g, '$1')
+      const normalize = (s: string) => s.replace(/\\(.)/g, (match, character: string) =>
+        '.![]()*_`~-'.includes(character) ? character : match
+      )
       const { doc } = editor.state
       const target = normalize(text.trim().toLowerCase())
       doc.descendants((node, pos) => {

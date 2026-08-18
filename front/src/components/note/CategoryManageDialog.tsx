@@ -42,15 +42,6 @@ function saveOrder(items: CategoryItem[]) {
   }
 }
 
-function getSavedOrder(): string[] {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY)
-    return raw ? JSON.parse(raw) : []
-  } catch {
-    return []
-  }
-}
-
 export default function CategoryManageDialog({
   open,
   onOpenChange,
@@ -66,8 +57,10 @@ export default function CategoryManageDialog({
   const dragItem = useRef<number | null>(null)
 
   useEffect(() => {
+    // Reset the local drag buffer whenever the dialog opens or its source data refreshes.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setItems([...categories])
-  }, [open])
+  }, [open, categories])
 
   if (!open) return null
 

@@ -16,8 +16,8 @@ from app.schemas.models import (
 )
 from app.utils.auth_utils import get_current_user_id
 
-# 图片相关工具：定位存储目录，构建文件路径
-from app.utils.image_extractor import get_image_storage_dir
+# 图片相关工具：定位并校验存储路径
+from app.utils.image_extractor import get_image_media_type, resolve_image_path
 
 knowledge_router = APIRouter(prefix="/knowledge", tags=["knowledge"])
 
@@ -216,25 +216,18 @@ async def serve_knowledge_image(
     返回PDF中提取的原始图片（需JWT鉴权）
     图片存储在 data/extracted_images/{user_id}/{md5}/{filename}
     """
-    image_dir = get_image_storage_dir(user_id, md5)
-    image_path = os.path.join(image_dir, filename)
+    try:
+        image_path = resolve_image_path(user_id, md5, filename)
+    except ValueError:
+        raise HTTPException(status_code=404, detail="图片不存在")
 
-    if not os.path.exists(image_path):
+    if not os.path.isfile(image_path):
         raise HTTPException(status_code=404, detail="图片不存在")
 
     # 根据文件扩展名设置正确的 Content-Type，确保浏览器正确渲染图片
-    ext = os.path.splitext(filename)[1].lower()
-    media_type_map = {
-        '.png': 'image/png',
-        '.jpg': 'image/jpeg',
-        '.jpeg': 'image/jpeg',
-        '.tiff': 'image/tiff',
-        '.tif': 'image/tiff',
-        '.bmp': 'image/bmp',
-        '.gif': 'image/gif',
-        '.webp': 'image/webp',
-    }
-    media_type = media_type_map.get(ext, 'application/octet-stream')
+    media_type = get_image_media_type(filename)
+    if media_type is None:
+        raise HTTPException(status_code=404, detail="图片不存在")
     return FileResponse(image_path, media_type=media_type)
 
 

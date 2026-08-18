@@ -15,6 +15,7 @@ from app.rag.sse_models import SliceResult, SSEEvent
 from app.rag.task_queue import TaskQueue
 from app.rag.vector_store import VectorStoreService
 from app.utils.file_handler import get_file_md5_hex_sync
+from app.utils.image_extractor import get_image_media_type, get_image_storage_dir, resolve_image_path
 
 ALLOWED_EXTENSIONS = {'.pdf', '.txt', '.md', '.pptx', '.docx'}
 ALLOWED_MIME_TYPES = {
@@ -87,18 +88,20 @@ class KnowledgeService:
 
     async def handle_add_vector_single(self, file: UploadFile, user_id: str) -> str:
         """处理添加单个向量逻辑"""
-        store = VectorStoreService()
+        filename = file.filename or ''
+        if not filename:
+            raise HTTPException(status_code=400, detail="文件名不能为空")
 
-        if file.size > MAX_FILE_SIZE:
-            raise HTTPException(status_code=400, detail="文件大小不能超过20MB")
-
+        await file.seek(0)
         content = await file.read()
+        if len(content) > MAX_FILE_SIZE:
+            raise HTTPException(status_code=400, detail="文件大小不能超过20MB")
         await file.seek(0)
 
         mime = magic.Magic(mime=True)
         file_type = mime.from_buffer(content)
 
-        file_extension = os.path.splitext(file.filename)[1].lower()
+        file_extension = os.path.splitext(filename)[1].lower()
 
         if file_type not in ALLOWED_MIME_TYPES and file_extension not in ALLOWED_EXTENSIONS:
             raise HTTPException(
@@ -106,14 +109,19 @@ class KnowledgeService:
                 detail=f"文件类型不支持，目前支持PDF、TXT、Markdown、PPTX、DOCX文件类型。检测到的文件类型: {file_type}，扩展名: {file_extension}"
             )
 
+        # Initialize the vector store only after cheap input validation succeeds.
+        store = VectorStoreService()
         await store.get_document(files=[file], user_id=user_id)
-        return file.filename
+        return filename
 
     async def handle_add_vector_multiple(self, files: list[UploadFile], user_id: str) -> list[str]:
         """处理添加多个向量逻辑"""
         total_size = 0
         for file in files:
-            total_size += file.size or 0
+            await file.seek(0)
+            content = await file.read()
+            total_size += len(content)
+            await file.seek(0)
 
         if total_size > MAX_FOLDER_SIZE:
             raise HTTPException(status_code=400, detail="文件总大小不能超过200MB")
@@ -464,8 +472,10 @@ class KnowledgeService:
         这样前端可以一次请求拿到所有图片，然后根据 chunk 中的 image_paths 按需渲染，
         避免了每个图片单独发 HTTP 请求的性能开销（尤其适合移动端或图片较多的场景）。
         """
-        from app.utils.path_tool import get_data_path
-        image_dir = os.path.join(get_data_path(), 'extracted_images', user_id, md5)
+        try:
+            image_dir = get_image_storage_dir(user_id, md5, create=False)
+        except ValueError:
+            raise HTTPException(status_code=404, detail="图片不存在")
         if not os.path.isdir(image_dir):
             logger.warning(f"【知识库】图片目录不存在: {image_dir}")
             return {"md5": md5, "images": {}}
@@ -473,16 +483,16 @@ class KnowledgeService:
         images = {}
         try:
             for filename in sorted(os.listdir(image_dir)):
-                filepath = os.path.join(image_dir, filename)
+                try:
+                    filepath = resolve_image_path(user_id, md5, filename)
+                except ValueError:
+                    logger.warning(f"【知识库】跳过非法图片路径: {filename}")
+                    continue
                 if not os.path.isfile(filepath):
                     continue
-                _, ext = os.path.splitext(filename)
-                mime_map = {
-                    '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg',
-                    '.tiff': 'image/tiff', '.tif': 'image/tiff',
-                    '.bmp': 'image/bmp', '.gif': 'image/gif', '.webp': 'image/webp',
-                }
-                mime = mime_map.get(ext.lower(), 'application/octet-stream')
+                mime = get_image_media_type(filename)
+                if mime is None:
+                    continue
                 with open(filepath, "rb") as f:
                     b64 = base64.b64encode(f.read()).decode("utf-8")
                 images[filename] = f"data:{mime};base64,{b64}"

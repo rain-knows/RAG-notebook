@@ -1,4 +1,5 @@
 import os
+import re
 import shutil
 
 import fitz
@@ -12,13 +13,71 @@ from app.utils.path_tool import get_abstract_path, get_data_path
 # 2. 按文档 MD5 隔离——删除文档时可以直接删除整个 md5 目录
 # 3. 路径中包含用户ID，便于图片鉴权时验证权限
 
+_MD5_PATTERN = re.compile(r"^[0-9a-fA-F]{32}$")
+_IMAGE_MEDIA_TYPES = {
+    '.png': 'image/png',
+    '.jpg': 'image/jpeg',
+    '.jpeg': 'image/jpeg',
+    '.tiff': 'image/tiff',
+    '.tif': 'image/tiff',
+    '.bmp': 'image/bmp',
+    '.gif': 'image/gif',
+    '.webp': 'image/webp',
+}
 
-def get_image_storage_dir(user_id: str, md5: str) -> str:
+
+def _validate_path_component(value: str, name: str) -> None:
+    """Reject path separators before a value is used as a directory component."""
+    if not value or value in {'.', '..'} or '/' in value or '\\' in value:
+        raise ValueError(f"非法{name}")
+
+
+def _validate_md5(md5: str) -> None:
+    if not isinstance(md5, str) or _MD5_PATTERN.fullmatch(md5) is None:
+        raise ValueError("非法MD5值")
+
+
+def get_image_media_type(filename: str) -> str | None:
+    """Return the supported image MIME type for a filename, if any."""
+    return _IMAGE_MEDIA_TYPES.get(os.path.splitext(filename)[1].lower())
+
+
+def get_image_storage_dir(user_id: str, md5: str, *, create: bool = True) -> str:
     """获取图片存储目录 data/extracted_images/{user_id}/{md5}/"""
+    _validate_path_component(user_id, '用户ID')
+    _validate_md5(md5)
     base_dir = os.path.join(get_data_path(), 'extracted_images')
     storage_dir = os.path.join(base_dir, user_id, md5)
-    os.makedirs(storage_dir, exist_ok=True)
+    resolved_base_dir = os.path.realpath(base_dir)
+    resolved_storage_dir = os.path.realpath(storage_dir)
+    try:
+        inside_base_dir = os.path.commonpath([resolved_base_dir, resolved_storage_dir]) == resolved_base_dir
+    except ValueError:
+        inside_base_dir = False
+    if not inside_base_dir:
+        raise ValueError("非法图片存储目录")
+    if create:
+        os.makedirs(storage_dir, exist_ok=True)
     return storage_dir
+
+
+def resolve_image_path(user_id: str, md5: str, filename: str) -> str:
+    """Resolve an extracted image while keeping it inside its document directory."""
+    if not filename or '/' in filename or '\\' in filename or filename in {'.', '..'}:
+        raise ValueError("非法图片文件名")
+    if get_image_media_type(filename) is None:
+        raise ValueError("不支持的图片类型")
+
+    image_dir = get_image_storage_dir(user_id, md5, create=False)
+    image_path = os.path.realpath(os.path.join(image_dir, filename))
+    image_root = os.path.realpath(image_dir)
+    try:
+        inside_image_dir = os.path.commonpath([image_root, image_path]) == image_root
+    except ValueError:
+        inside_image_dir = False
+    if not inside_image_dir:
+        raise ValueError("非法图片路径")
+    return image_path
 
 
 def extract_images_from_pdf(pdf_path: str, user_id: str, md5: str) -> dict[int, list[str]]:
@@ -92,8 +151,7 @@ def delete_image_directory(user_id: str, md5: str) -> bool:
     删除指定用户和md5的图片目录。
     当用户删除某个文档时，同步清理对应的图片目录，避免残留文件占用磁盘。
     """
-    base_dir = os.path.join(get_data_path(), 'extracted_images')
-    storage_dir = os.path.join(base_dir, user_id, md5)
+    storage_dir = get_image_storage_dir(user_id, md5, create=False)
     if os.path.exists(storage_dir):
         shutil.rmtree(storage_dir)
         logger.info(f"【图片清理】已删除图片目录: {storage_dir}")
@@ -106,6 +164,7 @@ def delete_user_all_images(user_id: str) -> bool:
     删除指定用户的所有图片目录。
     当用户清空整个知识库时调用，清理该用户的所有提取图片。
     """
+    _validate_path_component(user_id, '用户ID')
     base_dir = os.path.join(get_data_path(), 'extracted_images')
     user_dir = os.path.join(base_dir, user_id)
     if os.path.exists(user_dir):

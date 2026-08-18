@@ -52,8 +52,6 @@ function buildCategoryList(customCategories: string[]) {
   if (order.length === 0) return list
 
   const orderIndex = new Map(order.map((v, i) => [v, i]))
-  const allValues = new Set(list.map((c) => c.value))
-
   return list.sort((a, b) => {
     if (a.value === '') return -1
     if (b.value === '') return 1
@@ -76,10 +74,11 @@ export default function NoteList() {
   const [loading, setLoading] = useState(false)
   const [hasMore, setHasMore] = useState(true)
   const sentinelRef = useRef<HTMLDivElement>(null)
+  const initialLoadComplete = useRef(false)
 
   const [selectMode, setSelectMode] = useState(false)
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set())
-  const longPressTimer = useRef<ReturnType<typeof setTimeout>>()
+  const longPressTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
   const pressStartPos = useRef<{ x: number; y: number }>({ x: 0, y: 0 })
   const enteredViaLongPress = useRef(false)
   const pointerMoved = useRef(false)
@@ -112,11 +111,12 @@ export default function NoteList() {
       } else {
         setNotes((prev) => [...prev, ...items])
       }
-      setHasMore(pageNum * 20 < totalCount)
+      setHasMore(!searchQuery && pageNum * 20 < totalCount)
     } catch {
       // ignore
     } finally {
       setLoading(false)
+      initialLoadComplete.current = true
     }
   }, [category, searchQuery])
 
@@ -137,28 +137,35 @@ export default function NoteList() {
   }, [])
 
   useEffect(() => {
+    // The request owns loading state, so reset the page before each filter request.
+    initialLoadComplete.current = false
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setPage(1)
     loadNotes(1, true)
-  }, [category, searchQuery])
+  }, [category, searchQuery, loadNotes])
 
   useEffect(() => {
+    // Refreshing category counts is an external request triggered by local state.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     refreshCategories(extraCategories)
-  }, [extraCategories])
+  }, [extraCategories, refreshCategories])
 
   useEffect(() => {
     const el = sentinelRef.current
     if (!el) return
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting && hasMore && !loading && page > 1) {
-          loadNotes(page)
+        if (entry.isIntersecting && initialLoadComplete.current && hasMore && !loading) {
+          const nextPage = page + 1
+          setPage(nextPage)
+          loadNotes(nextPage)
         }
       },
       { threshold: 0.1 }
     )
     observer.observe(el)
     return () => observer.disconnect()
-  }, [hasMore, loading, page])
+  }, [hasMore, loading, page, loadNotes])
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault()
