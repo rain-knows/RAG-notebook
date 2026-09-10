@@ -379,21 +379,6 @@ separators: ["\n\n", "\n", "。", "！", "？", "!", "?", " ", ""]
 - **重排序模型加载失败**：确认 `RERANKER_MODEL_PATH` 指向正确的模型路径
 - **Ollama 连接失败**：确认 `ollama serve` 已运行且模型已拉取
 
-## 联系方式
-
-如有任何问题或建议，欢迎提交 GitHub Issues 或联系作者：
-
-- Email: n3032747608@163.com
-- QQ: 3032747608
-
-## Star History
-
-
- <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=RMA-MUN/LangChain-RAG-FastAPI-Service&type=date&theme=dark&legend=top-left" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=RMA-MUN/LangChain-RAG-FastAPI-Service&type=date&legend=top-left" />
-   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=RMA-MUN/LangChain-RAG-FastAPI-Service&type=date&legend=top-left" />
- </picture>
 
 
 ## License
